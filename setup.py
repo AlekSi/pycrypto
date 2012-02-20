@@ -85,6 +85,10 @@ else:
     if sys.platform != "win32": # Avoid nt.py, as 2to3 can't fix it w/o winrandom
         EXCLUDE_PY += [('Crypto.Random.OSRNG','nt')]
 
+def is_pypy():
+    import platform
+    platform.python_implementation() == 'PyPy'
+
 # Work around the print / print() issue with Python 2.x and 3.x. We only need
 # to print at one point of the code, which makes this easy
 
@@ -153,6 +157,11 @@ class PCTBuildExt (build_ext):
             ac = self.__read_autoconf("src/inc-msvc/config.h")
         else:
             ac = self.__read_autoconf("src/config.h")
+
+        # Do not use C module in PyPy
+        if is_pypy():
+            ac["HAVE_LIBGMP"] = 0
+            ac["HAVE_LIBMPIR"] = 0
 
         # Detect libgmp or libmpir and don't build _fastmath if both are missing.
         if ac.get("HAVE_LIBGMP"):
