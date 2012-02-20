@@ -87,7 +87,7 @@ else:
 
 def is_pypy():
     import platform
-    platform.python_implementation() == 'PyPy'
+    return platform.python_implementation() == 'PyPy'
 
 # Work around the print / print() issue with Python 2.x and 3.x. We only need
 # to print at one point of the code, which makes this easy
@@ -347,7 +347,7 @@ class TestCommand(Command):
         self.announce("running extended self-tests")
 
 kw = {'name':"pycrypto",
-      'version':"2.5",  # See also: lib/Crypto/__init__.py
+      'version':"2.5.0.2",  # See also: lib/Crypto/__init__.py
       'description':"Cryptographic modules for Python.",
       'author':"Dwayne C. Litzenberger",
       'author_email':"dlitz@dlitz.net",
